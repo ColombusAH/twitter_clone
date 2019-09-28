@@ -2,6 +2,10 @@ import express from 'express';
 import fs from 'fs';
 import morgan from 'morgan';
 import path from 'path';
+import { initializePassport } from './config/passport';
+import mongoose from 'mongoose';
+import { config } from './config';
+import router from './routes';
 
 const app = express();
 
@@ -20,10 +24,19 @@ const accessLogStream = fs.createWriteStream(
   path.join(__dirname, './logs/access.log'),
   { flags: 'a' }
 );
-console.log(__dirname);
 
 // register morgan to be my logger.
 app.use(morgan('combined', { stream: accessLogStream }));
+
+mongoose.connect(
+  config.DB_CONNECT,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => console.log('connected to DB')
+);
+
+initializePassport();
+
+app.use(router);
 
 app.get('/', (req, res) => {
   res.send('Hello World');
