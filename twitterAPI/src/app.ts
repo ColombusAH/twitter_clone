@@ -6,6 +6,7 @@ import { initializePassport } from './config/passport';
 import mongoose from 'mongoose';
 import { config } from './config';
 import router from './routes';
+import helmet from 'helmet';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.set('port', port);
 // set midllewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
 
 // set the log file.
 

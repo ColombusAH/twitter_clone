@@ -12,6 +12,7 @@ export interface IUser extends Document {
   generateJWT: () => string;
   setPassword: (password: string) => void;
   hash: string;
+  token: string;
 }
 
 const UserSchema: Schema = new Schema(
